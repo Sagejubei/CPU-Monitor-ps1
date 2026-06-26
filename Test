@@ -1,0 +1,25 @@
+# Set the CPU usage threshold
+$threshold = 80
+
+# Start an inifinite loop
+while ($true) {
+    # Get the current CPU Usage
+    $cpu = (Get-CimInstance Win32_Processor).LoadPercentage
+
+    # Check if CPU usage is above the threshold
+    if ($cpu -gt $threshold) {
+        # Alert the user a red message
+        Write-Host "Warning: CPU usage is at $cpu%!" -ForegroundColor Red
+
+        # Log the high CPU usage timestamp
+        "$(Get-Date) - CPU usage: $cpu%" | Out-File -Append "$Home\CPULog.txt"
+    }
+    else {
+        # Display normal CPU usage in green 
+        Write-Host "CPU usage is at $cpu%" -ForegroundColor Green
+    }
+
+    # Wait for 10 seconds before the next check
+    Start-Sleep -Seconds 10
+
+}
